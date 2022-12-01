@@ -18,5 +18,10 @@ namespace AlabamaWalks.API.Repositories
         {
            return await _context.Regions.ToListAsync();
         }
+
+        public async Task<Region> GetRegionByIdAsync(Guid id)
+        {
+            return await _context.Regions.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }
