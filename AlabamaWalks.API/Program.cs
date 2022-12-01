@@ -3,6 +3,8 @@
 // Creates the WebApplication builder class //
 // We can use to inject the dependencies into the services collection //
 using AlabamaWalks.API.Data;
+using AlabamaWalks.API.Interfaces;
+using AlabamaWalks.API.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +19,9 @@ builder.Services.AddDbContext<AlabamaWalksDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("AlabamaWalks"));
 });
+
+// Whenever I aks for the Interface - Give me this Implementation //
+builder.Services.AddScoped<IRegionRepository, RegionRepositories>(); 
 
 var app = builder.Build();
 
