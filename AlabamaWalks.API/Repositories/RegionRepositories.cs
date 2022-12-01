@@ -1,6 +1,7 @@
 ﻿using AlabamaWalks.API.Data;
 using AlabamaWalks.API.Interfaces;
 using AlabamaWalks.API.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlabamaWalks.API.Repositories
 {
@@ -13,9 +14,9 @@ namespace AlabamaWalks.API.Repositories
         {
             _context = context;
         }
-        public IEnumerable<Region> GetAllRegions()
+        public async Task<IEnumerable<Region>> GetAllRegionsAsync()
         {
-           return _context.Regions.ToList();
+           return await _context.Regions.ToListAsync();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace AlabamaWalks.API.Controllers
         [HttpGet]
         public IActionResult GetAllRegions()
         {
-            var regions = _repository.GetAllRegions();
+            var regions = _repository.GetAllRegionsAsync();
             var regionsDTO = _mapper.Map<List<Models.DTO.Region>>(regions); 
             
        
