@@ -1,5 +1,6 @@
 ﻿using AlabamaWalks.API.Interfaces;
 using AlabamaWalks.API.Models.Domain;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,33 +12,21 @@ namespace AlabamaWalks.API.Controllers
     public class RegionsController : ControllerBase
     {
         private readonly IRegionRepository _repository;
-        
+        private readonly IMapper _mapper;
+
         // Injecting the RegionRepository through the Constructor //
-        public RegionsController(IRegionRepository repository)
+        public RegionsController(IRegionRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
         [HttpGet]
         public IActionResult GetAllRegions()
         {
             var regions = _repository.GetAllRegions();
-            var regionsDTO = new List<Models.DTO.Region>();
-            // Return DTO Regions //
-            regions.ToList().ForEach(region =>
-            {
-                var regionDTO = new Models.DTO.Region()
-                {
-                    Id = region.Id,
-                    Code = region.Code,
-                    Name = region.Name,
-                    Area = region.Area,
-                    Lat = region.Lat,
-                    Long = region.Long,
-                    Population = region.Population
-
-                };
-                regionsDTO.Add(regionDTO);
-            });
+            var regionsDTO = _mapper.Map<List<Models.DTO.Region>>(regions); 
+            
+       
             return Ok(regionsDTO); 
         }
     }
