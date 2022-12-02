@@ -53,7 +53,10 @@ namespace AlabamaWalks.API.Controllers
         public async Task<IActionResult> AddRegion(AddRegionRequest addRegionRequest)
         {
             // Request(DTO) Pass to Domain //
-            var region = new Region()
+            var region = _mapper.Map<Region>(addRegionRequest);
+
+            // For Reference Purposes // 
+           /*     var region = new Region()
             {
                 Code= addRegionRequest.Code,
                 Area= addRegionRequest.Area,
@@ -62,22 +65,13 @@ namespace AlabamaWalks.API.Controllers
                 Name = addRegionRequest.Name,
                 Population= addRegionRequest.Population
 
-            }; 
-
+            }; */
+ 
             // Domain Pass to Repo //
            var response =  await _repository.AddRegionAsync(region);
 
             // Domain Convert to DTO Send to Client //
-            var regionDTO = new RegionDTO()
-            {
-                Id = region.Id,
-                Code = region.Code,
-                Area = region.Area,
-                Lat = region.Lat,
-                Long = region.Long,
-                Name = region.Name,
-                Population = region.Population
-            }; 
+            var regionDTO = _mapper.Map<RegionDTO>(region);
             
             // Pass CreatedAtAction to the Client - HTTP 201 - Client Knows Save was Successful //
             // Uses the GetRegioinsById Action - Passing the Id - Passing the Object as well //

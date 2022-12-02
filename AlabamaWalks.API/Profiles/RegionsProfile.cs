@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using AlabamaWalks.API.Models.Domain;
+using AlabamaWalks.API.Models.DTO;
+using AutoMapper;
 // Profile comes from AutoMapper //
 namespace AlabamaWalks.API.Profiles
 {
@@ -8,8 +10,13 @@ namespace AlabamaWalks.API.Profiles
         public RegionsProfile()
         {
             // With ForMember we can specify how we want to map //
-            CreateMap<Models.Domain.Region, Models.DTO.RegionDTO>()
+
+            // Region to RegionDTO
+            CreateMap<Region, RegionDTO>()
                 .ForMember(dest => dest.Id, options => options.MapFrom(src => src.Id))
+                .ReverseMap();
+            // Region to AddRegionRequest //
+            CreateMap<Region, AddRegionRequest>()
                 .ReverseMap(); 
         }
 
