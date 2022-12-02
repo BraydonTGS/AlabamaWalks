@@ -14,6 +14,17 @@ namespace AlabamaWalks.API.Repositories
         {
             _context = context;
         }
+
+        public async Task<Region> AddRegionAsync(Region region)
+        {
+            // Override the Id property to be a new Guid //
+            region.Id= Guid.NewGuid();
+            await _context.Regions.AddAsync(region);
+            await _context.SaveChangesAsync();
+            return region;
+
+        }
+
         public async Task<IEnumerable<Region>> GetAllRegionsAsync()
         {
            return await _context.Regions.ToListAsync();

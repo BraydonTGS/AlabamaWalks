@@ -8,7 +8,7 @@ namespace AlabamaWalks.API.Profiles
         public RegionsProfile()
         {
             // With ForMember we can specify how we want to map //
-            CreateMap<Models.Domain.Region, Models.DTO.Region>()
+            CreateMap<Models.Domain.Region, Models.DTO.RegionDTO>()
                 .ForMember(dest => dest.Id, options => options.MapFrom(src => src.Id))
                 .ReverseMap(); 
         }

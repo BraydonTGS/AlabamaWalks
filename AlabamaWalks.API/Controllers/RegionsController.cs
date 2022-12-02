@@ -1,5 +1,6 @@
 ﻿using AlabamaWalks.API.Interfaces;
 using AlabamaWalks.API.Models.Domain;
+using AlabamaWalks.API.Models.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace AlabamaWalks.API.Controllers
         public async Task<IActionResult> GetAllRegions()
         {
             var regions = await _repository.GetAllRegionsAsync();
-            var response = _mapper.Map<List<Models.DTO.Region>>(regions); 
+            var response = _mapper.Map<List<RegionDTO>>(regions); 
     
             return Ok(response); 
         }
@@ -34,6 +35,7 @@ namespace AlabamaWalks.API.Controllers
         // Get Region by Id //
         [HttpGet]
         [Route("{id:guid}")]
+        [ActionName("GetRegionById")]
         public async Task<IActionResult> GetRegionById(Guid id)
         {
             var region = await _repository.GetRegionByIdAsync(id);
@@ -41,9 +43,45 @@ namespace AlabamaWalks.API.Controllers
             {
                 return NotFound();
             }
-            var response = _mapper.Map<Models.DTO.Region>(region);
+            var response = _mapper.Map<RegionDTO>(region);
 
             return Ok(response);
+        }
+
+        // Create a New Region // 
+        [HttpPost]
+        public async Task<IActionResult> AddRegion(AddRegionRequest addRegionRequest)
+        {
+            // Request(DTO) Pass to Domain //
+            var region = new Region()
+            {
+                Code= addRegionRequest.Code,
+                Area= addRegionRequest.Area,
+                Lat= addRegionRequest.Lat,
+                Long= addRegionRequest.Long,
+                Name = addRegionRequest.Name,
+                Population= addRegionRequest.Population
+
+            }; 
+
+            // Domain Pass to Repo //
+           var response =  await _repository.AddRegionAsync(region);
+
+            // Domain Convert to DTO Send to Client //
+            var regionDTO = new RegionDTO()
+            {
+                Id = region.Id,
+                Code = region.Code,
+                Area = region.Area,
+                Lat = region.Lat,
+                Long = region.Long,
+                Name = region.Name,
+                Population = region.Population
+            }; 
+            
+            // Pass CreatedAtAction to the Client - HTTP 201 - Client Knows Save was Successful //
+            // Uses the GetRegioinsById Action - Passing the Id - Passing the Object as well //
+            return CreatedAtAction(nameof(GetRegionById), new { id = regionDTO.Id } , regionDTO); 
         }
     }
 }
