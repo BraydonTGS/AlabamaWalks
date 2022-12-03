@@ -77,5 +77,22 @@ namespace AlabamaWalks.API.Controllers
             // Uses the GetRegioinsById Action - Passing the Id - Passing the Object as well //
             return CreatedAtAction(nameof(GetRegionById), new { id = regionDTO.Id } , regionDTO); 
         }
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteRegion(Guid id)
+        {
+            // Convert Response back to DTO //
+            var region = await _repository.DeleteRegionAsync(id);
+            if(region == null)
+            {
+                return NotFound();
+            }
+
+            // Map to DTO //
+            var regionDTO = _mapper.Map<RegionDTO>(region);
+
+            // Return Response to Client // 
+            return Ok(regionDTO); 
+        }
     }
 }

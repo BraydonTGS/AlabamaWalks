@@ -25,6 +25,19 @@ namespace AlabamaWalks.API.Repositories
 
         }
 
+        public async Task<Region> DeleteRegionAsync(Guid id)
+        {
+            var region =  await _context.Regions.FirstOrDefaultAsync(x => x.Id==id);
+            if (region == null)
+            {
+                return null;
+            }
+            // Delete Region //
+             _context.Regions.Remove(region);
+            await _context.SaveChangesAsync();
+            return region;
+        }
+
         public async Task<IEnumerable<Region>> GetAllRegionsAsync()
         {
            return await _context.Regions.ToListAsync();

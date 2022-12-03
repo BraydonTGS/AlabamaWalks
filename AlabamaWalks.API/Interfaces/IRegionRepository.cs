@@ -6,6 +6,7 @@ namespace AlabamaWalks.API.Interfaces
     {
         Task<IEnumerable<Region>> GetAllRegionsAsync(); 
         Task<Region> GetRegionByIdAsync(Guid id);
-        Task<Region> AddRegionAsync(Region region); 
+        Task<Region> AddRegionAsync(Region region);
+        Task<Region> DeleteRegionAsync(Guid id);
     }
 }
