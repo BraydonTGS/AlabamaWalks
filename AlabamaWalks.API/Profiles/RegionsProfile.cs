@@ -18,6 +18,8 @@ namespace AlabamaWalks.API.Profiles
             // Region to AddRegionRequest //
             CreateMap<Region, AddRegionRequest>()
                 .ReverseMap(); 
+            CreateMap<Region, UpdateRegionRequest>()
+                .ReverseMap();
         }
 
        
