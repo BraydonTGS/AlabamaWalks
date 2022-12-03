@@ -32,7 +32,6 @@ namespace AlabamaWalks.API.Repositories
             {
                 return null;
             }
-            // Delete Region //
              _context.Regions.Remove(region);
             await _context.SaveChangesAsync();
             return region;
@@ -46,6 +45,31 @@ namespace AlabamaWalks.API.Repositories
         public async Task<Region> GetRegionByIdAsync(Guid id)
         {
             return await _context.Regions.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Region> UpdateRegionAsync(Guid id, Region region)
+        {
+            var existingRegion = await _context.Regions.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existingRegion == null)
+            {
+                return null; 
+            }
+
+            existingRegion.Code = region.Code; 
+            existingRegion.Name= region.Name;
+            existingRegion.Area= region.Area;
+            existingRegion.Lat= region.Lat;
+            existingRegion.Long = region.Long;
+            existingRegion.Population = region.Population; 
+
+            await _context.SaveChangesAsync();
+
+            return existingRegion;
+
+
+
+
         }
     }
 }

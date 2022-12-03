@@ -55,7 +55,7 @@ namespace AlabamaWalks.API.Controllers
             // Request(DTO) Pass to Domain //
             var region = _mapper.Map<Region>(addRegionRequest);
 
-            // For Reference Purposes // 
+            // For Reference Purposes - Before AutoMapper // 
            /*     var region = new Region()
             {
                 Code= addRegionRequest.Code,
@@ -69,7 +69,7 @@ namespace AlabamaWalks.API.Controllers
  
             // Domain Pass to Repo //
            var response =  await _repository.AddRegionAsync(region);
-
+            
             // Domain Convert to DTO Send to Client //
             var regionDTO = _mapper.Map<RegionDTO>(region);
             
@@ -77,6 +77,8 @@ namespace AlabamaWalks.API.Controllers
             // Uses the GetRegioinsById Action - Passing the Id - Passing the Object as well //
             return CreatedAtAction(nameof(GetRegionById), new { id = regionDTO.Id } , regionDTO); 
         }
+
+        // Delete Region //
         [HttpDelete]
         [Route("{id:guid}")]
         public async Task<IActionResult> DeleteRegion(Guid id)
