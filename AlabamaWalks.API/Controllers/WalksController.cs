@@ -21,15 +21,54 @@ namespace AlabamaWalks.API.Controllers
             _mapper = mapper;
         }
 
+        // Get All Walks //
         [HttpGet]
         public async Task<IActionResult> GetAllWalks()
         {
             // Fetch From DB - Convert to DTO - Return //
             var walks = await _repository.GetAllWalksAsync();
+            if(walks == null)
+            {
+                return NotFound();
+            }
             var response = _mapper.Map<List<WalkDTO>>(walks); 
             return Ok(response);
         }
 
+        // Get Walk By Id //
+        [HttpGet]
+        [Route("{id:guid}")]
+        [ActionName("GetWalkById")]
+        public async Task<IActionResult> GetWalkById(Guid id)
+        {
+           var walk = await _repository.GetWalkByIdAsync(id);
+           var responce = _mapper.Map<WalkDTO>(walk);
+           return Ok(responce);
+        }
+
+        // Create a New Walk //
+        [HttpPost]
+        public async Task<IActionResult> AddWalk([FromBody] AddWalkRequest request)
+        {
+            // Convert DTO to Domain //
+            var walkDomain = _mapper.Map<Walk>(request);
+
+            // Pass Domain to Repo //
+            var walk = await _repository.AddWalkAsync(walkDomain);
+            if(walk == null)
+            {
+                return NotFound();
+            }
+
+            // Convert Domain to DTO //
+            var response = _mapper.Map<WalkDTO>(walk);
+
+            // Send Response to Client //
+            // Pass CreatedAtAction to the Client - HTTP 201 - Client Knows Save was Successful //
+            // Uses the GetRegioinsById Action - Passing the Id - Passing the Object as well //
+            return CreatedAtAction(nameof(GetWalkById), new {id = response.Id}, response);
+
+        }
 
     }
 }
