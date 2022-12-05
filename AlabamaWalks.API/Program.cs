@@ -22,6 +22,7 @@ builder.Services.AddDbContext<AlabamaWalksDbContext>(options =>
 
 // Whenever I aks for the Interface - Give me this Implementation //
 builder.Services.AddScoped<IRegionRepository, RegionRepositories>();
+builder.Services.AddScoped<IWalkRepository, WalkRepositories>();
 
 // AutoMapper will look for all of the profiles that we have //
 builder.Services.AddAutoMapper(typeof(Program).Assembly); 
