@@ -14,3 +14,7 @@
 
     }
 }
+
+// Navigation Properties Entity Framework //
+// Provides a way to nagivate an association between two entity types //
+// Every object can have a navigation property for every relationship in which it participates //

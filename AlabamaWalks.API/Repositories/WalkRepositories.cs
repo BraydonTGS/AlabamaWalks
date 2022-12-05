@@ -16,7 +16,11 @@ namespace AlabamaWalks.API.Repositories
 
         public async Task<IEnumerable<Walk>> GetAllWalksAsync()
         {
-            return await _context.Walks.ToListAsync();  
+            // Include: Specifies related Entities to include in the Query //
+            return await _context.Walks
+                .Include(x => x.Region)
+                .Include(x => x.WalkDifficulty)
+                .ToListAsync();  
         }
     }
 }
