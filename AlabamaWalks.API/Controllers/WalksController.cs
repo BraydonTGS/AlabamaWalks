@@ -89,5 +89,19 @@ namespace AlabamaWalks.API.Controllers
             // Send Response to Client //
             return CreatedAtAction(nameof(GetWalkById), new { id = response.Id }, response); 
         }
+
+        [HttpDelete]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> DeleteWalk([FromRoute] Guid id)
+        {
+            var walk = await _repository.DeleteWalkAsync(id);
+            if (walk == null)
+            {
+                return NotFound(); 
+            }
+            var response = _mapper.Map<WalkDTO>(walk); 
+            return Ok(response);
+        }
+
     }
 }
