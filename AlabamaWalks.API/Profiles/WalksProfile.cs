@@ -14,6 +14,8 @@ namespace AlabamaWalks.API.Profiles
                 .ReverseMap();
             CreateMap<Walk, AddWalkRequest>()
                 .ReverseMap(); 
+            CreateMap<Walk, UpdateWalkRequest>()
+                .ReverseMap();
         }
     }
 }

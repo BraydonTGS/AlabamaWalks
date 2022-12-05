@@ -70,5 +70,24 @@ namespace AlabamaWalks.API.Controllers
 
         }
 
+        // Update a Walk //
+        [HttpPut]
+        [Route("{id:guid}")]
+        // Id is coming FromRoute, UpdateWalkRequest is coming FromBody
+        public async Task<IActionResult> UpdateWalk([FromRoute]Guid id, [FromBody]UpdateWalkRequest request)
+        {
+            // Convert DTO to Domain //
+            var walkDomain = _mapper.Map<Walk>(request);
+            // Pass Domain to Repo //
+            var walk = await _repository.UpdateWalkAsync(id, walkDomain); 
+            if(walk == null)
+            {
+                return NotFound();
+            }
+            // Convet To DTO //
+            var response = _mapper.Map<WalkDTO>(walk);
+            // Send Response to Client //
+            return CreatedAtAction(nameof(GetWalkById), new { id = response.Id }, response); 
+        }
     }
 }

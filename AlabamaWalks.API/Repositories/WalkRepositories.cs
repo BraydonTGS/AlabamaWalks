@@ -42,5 +42,20 @@ namespace AlabamaWalks.API.Repositories
 
             return walk; 
         }
+
+        public async Task<Walk> UpdateWalkAsync(Guid id, Walk walk)
+        {
+           var existingWalk = await _context.Walks.FindAsync(id); 
+            if (existingWalk != null)
+            {
+                existingWalk.Name = walk.Name; 
+                existingWalk.Length = walk.Length;
+                existingWalk.WalkDifficultyId = walk.WalkDifficultyId; 
+                existingWalk.RegionId = walk.RegionId;
+                await _context.SaveChangesAsync();
+                return existingWalk; 
+            }
+            return null; 
+        }
     }
 }

@@ -7,5 +7,6 @@ namespace AlabamaWalks.API.Interfaces
         Task<IEnumerable<Walk>> GetAllWalksAsync();
         Task<Walk> GetWalkByIdAsync(Guid id); 
         Task<Walk> AddWalkAsync(Walk walk);
+        Task<Walk> UpdateWalkAsync(Guid id, Walk walk);
     }
 }
