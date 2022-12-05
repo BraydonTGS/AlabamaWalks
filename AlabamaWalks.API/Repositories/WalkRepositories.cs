@@ -23,6 +23,17 @@ namespace AlabamaWalks.API.Repositories
             return walk; 
         }
 
+        public async Task<Walk> DeleteWalkAsync(Guid id)
+        {
+            var existingWalk = await _context.Walks.FindAsync(id); 
+            if (existingWalk != null)
+            {
+                _context.Walks.Remove(existingWalk);
+               await _context.SaveChangesAsync(); 
+            }
+            return null; 
+        }
+
         public async Task<IEnumerable<Walk>> GetAllWalksAsync()
         {
             // Include: Specifies related Entities to include in the Query //
