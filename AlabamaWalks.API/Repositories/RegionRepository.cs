@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AlabamaWalks.API.Repositories
 {
-    public class RegionRepositories : IRegionRepository
+    public class RegionRepository : IRegionRepository
     {
         private readonly AlabamaWalksDbContext _context;
 
         // Injecting the DbContext through the Constructor //
-        public RegionRepositories(AlabamaWalksDbContext context)
+        public RegionRepository(AlabamaWalksDbContext context)
         {
             _context = context;
         }
