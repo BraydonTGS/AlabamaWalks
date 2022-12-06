@@ -1,4 +1,5 @@
 ﻿using AlabamaWalks.API.Interfaces;
+using AlabamaWalks.API.Models.Domain;
 using AlabamaWalks.API.Models.DTO;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -50,6 +51,16 @@ namespace AlabamaWalks.API.Controllers
             var response = _mapper.Map<WalkDifficultyDTO>(walkDiff); 
 
             return Ok(response);
+        }
+
+        // Add a New Walk Difficulty //
+        [HttpPost]
+        public async Task<IActionResult> AddWalkDifficulty(AddWalkDifficultyRequest request)
+        {
+            var domain = _mapper.Map<WalkDifficulty>(request);
+            var walkDifficulty = await _repository.AddWalkDifficultyAsync(domain);
+            var response = _mapper.Map<WalkDifficultyDTO>(walkDifficulty);
+            return Ok(response); 
         }
     }
 }

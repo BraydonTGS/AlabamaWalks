@@ -14,6 +14,15 @@ namespace AlabamaWalks.API.Repositories
             _context = context;
         }
 
+        public async Task<WalkDifficulty> AddWalkDifficultyAsync(WalkDifficulty walkDifficulty)
+        {
+            walkDifficulty.Id= Guid.NewGuid();
+            await _context.WalkDifficulty.AddAsync(walkDifficulty);
+            await _context.SaveChangesAsync();
+            return walkDifficulty; 
+     
+        }
+
         public async Task<IEnumerable<WalkDifficulty>> GetAllWalkDifficultiesAsync()
         {
             return await _context.WalkDifficulty.ToListAsync(); 
