@@ -22,7 +22,7 @@ namespace AlabamaWalks.API.Controllers
             _mapper = mapper;
         }
 
-        // Get All Regions //
+        // Get All Regions // Dont need to Worry about Validation - Not accepting anything from the Client //
         [HttpGet]
         public async Task<IActionResult> GetAllRegions()
         {
@@ -32,7 +32,7 @@ namespace AlabamaWalks.API.Controllers
             return Ok(response);
         }
 
-        // Get Region by Id //
+        // Get Region by Id // The Route is protecting what is being passed in by speficing a guid // 
         [HttpGet]
         [Route("{id:guid}")]
         [ActionName("GetRegionById")]
@@ -52,9 +52,16 @@ namespace AlabamaWalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRegion(AddRegionRequest addRegionRequest)
         {
+            // Validate The Request // 
+            var isValid = ValidateAddRegion(addRegionRequest);
+            if (!isValid)
+            {
+                // Bad Request Will Automatically Bind the BadRequest Errors to the ModelState //
+                return BadRequest(ModelState); 
+            }
             // Request(DTO) Pass to Domain //
             var region = _mapper.Map<Region>(addRegionRequest);
-
+            
             // For Reference Purposes - Before AutoMapper // 
             /*     var region = new Region()
              {
@@ -118,6 +125,50 @@ namespace AlabamaWalks.API.Controllers
             return Ok(regionDTO);
             
         }
-       
+
+
+        #region Private Methods
+
+        private bool ValidateAddRegion(AddRegionRequest request)
+        {
+            if (request == null)
+            {
+                ModelState.AddModelError(nameof(request), $"Add Region Data is required.");
+                return false; 
+            }
+            if (string.IsNullOrEmpty(request.Code))
+            {
+                ModelState.AddModelError(nameof(request.Code), $"{nameof(request.Code)} cannot be null empty or white space.");
+            }
+            if (string.IsNullOrEmpty(request.Name))
+            {
+                ModelState.AddModelError(nameof(request.Name), $"{nameof(request.Name)} cannot be null empty or white space.");
+            }  
+            if(request.Area <= 0)
+            {
+                ModelState.AddModelError(nameof(request.Area), $"{nameof(request.Area)} cannot be less than or equal to zero.");
+            }
+            if (request.Long <= 0)
+            {
+                ModelState.AddModelError(nameof(request.Long), $"{nameof(request.Long)} cannot be less than or equal to zero.");
+            }
+            if (request.Lat <= 0)
+            {
+                ModelState.AddModelError(nameof(request.Lat), $"{nameof(request.Lat)} cannot be less than or equal to zero.");  
+            }
+            if (request.Population < 0)
+            {
+                ModelState.AddModelError(nameof(request.Population), $"{nameof(request.Population)} cannot be less than zero.");
+            }
+
+            if (ModelState.ErrorCount> 0)
+            {
+                return false; 
+            }
+
+            return true; 
+        }
+        #endregion
+
     }
 }
