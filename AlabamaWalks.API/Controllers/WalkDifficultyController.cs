@@ -24,11 +24,31 @@ namespace AlabamaWalks.API.Controllers
         public async Task<IActionResult> GetAllWalkDifficulties()
         {
             var walkDiff = await _repository.GetAllWalkDifficultiesAsync(); 
+
             if (walkDiff == null)
             {
                 return NotFound();
             }
+
             var response = _mapper.Map<List<WalkDifficultyDTO>>(walkDiff); 
+
+            return Ok(response);
+        }
+
+        // Get Walk Difficulty by Id //
+        [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<IActionResult> GetWalkDifficultyById(Guid id)
+        {
+           var walkDiff = await _repository.GetWalkDifficultyById(id);
+
+           if(walkDiff == null)
+            {
+                return NotFound();
+            }
+
+            var response = _mapper.Map<WalkDifficultyDTO>(walkDiff); 
+
             return Ok(response);
         }
     }

@@ -18,5 +18,10 @@ namespace AlabamaWalks.API.Repositories
         {
             return await _context.WalkDifficulty.ToListAsync(); 
         }
+
+        public async Task<WalkDifficulty> GetWalkDifficultyById(Guid id)
+        {
+            return await _context.WalkDifficulty.FirstOrDefaultAsync(x => x.Id == id); 
+        }
     }
 }

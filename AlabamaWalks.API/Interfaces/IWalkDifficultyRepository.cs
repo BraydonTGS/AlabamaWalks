@@ -4,6 +4,7 @@ namespace AlabamaWalks.API.Interfaces
 {
     public interface IWalkDifficultyRepository
     {
-        Task<IEnumerable<WalkDifficulty>>GetAllWalkDifficultiesAsync(); 
+        Task<IEnumerable<WalkDifficulty>>GetAllWalkDifficultiesAsync();
+        Task<WalkDifficulty> GetWalkDifficultyById(Guid id); 
     }
 }
