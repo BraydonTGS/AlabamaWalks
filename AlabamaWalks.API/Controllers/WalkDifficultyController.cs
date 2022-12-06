@@ -39,6 +39,7 @@ namespace AlabamaWalks.API.Controllers
         // Get Walk Difficulty by Id //
         [HttpGet]
         [Route("{id:guid}")]
+        [ActionName("GetWalkDifficultyById")]
         public async Task<IActionResult> GetWalkDifficultyById(Guid id)
         {
            var walkDiff = await _repository.GetWalkDifficultyById(id);
@@ -60,7 +61,7 @@ namespace AlabamaWalks.API.Controllers
             var domain = _mapper.Map<WalkDifficulty>(request);
             var walkDifficulty = await _repository.AddWalkDifficultyAsync(domain);
             var response = _mapper.Map<WalkDifficultyDTO>(walkDifficulty);
-            return Ok(response); 
+            return CreatedAtAction(nameof(GetWalkDifficultyById), new {id = response.Id}, response); 
         }
     }
 }
