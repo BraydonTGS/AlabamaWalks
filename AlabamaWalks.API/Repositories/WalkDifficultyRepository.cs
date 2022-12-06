@@ -23,14 +23,41 @@ namespace AlabamaWalks.API.Repositories
      
         }
 
+        public async Task<WalkDifficulty> DeleteWalkDifficultyAsync(Guid id)
+        {
+            var existingWalkDiff = await _context.WalkDifficulty.FindAsync(id); 
+            if (existingWalkDiff != null)
+            {
+                _context.WalkDifficulty.Remove(existingWalkDiff);
+                await _context.SaveChangesAsync();
+                return existingWalkDiff; 
+            }
+            return null; 
+        }
+
         public async Task<IEnumerable<WalkDifficulty>> GetAllWalkDifficultiesAsync()
         {
             return await _context.WalkDifficulty.ToListAsync(); 
         }
 
-        public async Task<WalkDifficulty> GetWalkDifficultyById(Guid id)
+        public async Task<WalkDifficulty> GetWalkDifficultyByIdAsync(Guid id)
         {
             return await _context.WalkDifficulty.FirstOrDefaultAsync(x => x.Id == id); 
         }
+
+        public async Task<WalkDifficulty> UpdateWalkDifficultyAsync(Guid id, WalkDifficulty walkDifficulty)
+        {
+            var existingWalkDiff = await _context.WalkDifficulty.FindAsync(id); 
+            if (existingWalkDiff != null)
+            {
+                existingWalkDiff.Code = walkDifficulty.Code;
+                await _context.SaveChangesAsync();
+                return existingWalkDiff;
+            }
+            return null;
+          
+        }
+
+
     }
 }
