@@ -109,6 +109,11 @@ namespace AlabamaWalks.API.Controllers
         // Id is coming FromRoute, UpdateRegionRequest is coming FromBody
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequest updateRegion)
         {
+            // Validate the incoming request // 
+            if (!ValidateUpdateRegion(updateRegion))
+            {
+                return BadRequest(ModelState);
+            }
             // Convert DTO to Domain // 
             var region = _mapper.Map<Region>(updateRegion);
 
@@ -148,13 +153,13 @@ namespace AlabamaWalks.API.Controllers
             {
                 ModelState.AddModelError(nameof(request.Area), $"{nameof(request.Area)} cannot be less than or equal to zero.");
             }
-            if (request.Long <= 0)
+            if (request.Long == 0)
             {
-                ModelState.AddModelError(nameof(request.Long), $"{nameof(request.Long)} cannot be less than or equal to zero.");
+                ModelState.AddModelError(nameof(request.Long), $"{nameof(request.Long)} cannot be equal to zero.");
             }
-            if (request.Lat <= 0)
+            if (request.Lat == 0)
             {
-                ModelState.AddModelError(nameof(request.Lat), $"{nameof(request.Lat)} cannot be less than or equal to zero.");  
+                ModelState.AddModelError(nameof(request.Lat), $"{nameof(request.Lat)} cannot be equal to zero.");  
             }
             if (request.Population < 0)
             {
@@ -167,6 +172,46 @@ namespace AlabamaWalks.API.Controllers
             }
 
             return true; 
+        }
+
+        private bool ValidateUpdateRegion(UpdateRegionRequest request)
+        {
+            if (request == null)
+            {
+                ModelState.AddModelError(nameof(request), $"Update Region Data is required.");
+                return false;
+            }
+            if (string.IsNullOrEmpty(request.Code))
+            {
+                ModelState.AddModelError(nameof(request.Code), $"{nameof(request.Code)} cannot be null empty or white space.");
+            }
+            if (string.IsNullOrEmpty(request.Name))
+            {
+                ModelState.AddModelError(nameof(request.Name), $"{nameof(request.Name)} cannot be null empty or white space.");
+            }
+            if (request.Area <= 0)
+            {
+                ModelState.AddModelError(nameof(request.Area), $"{nameof(request.Area)} cannot be less than or equal to zero.");
+            }
+            if (request.Long <= 0)
+            {
+                ModelState.AddModelError(nameof(request.Long), $"{nameof(request.Long)} cannot be equal to zero.");
+            }
+            if (request.Lat <= 0)
+            {
+                ModelState.AddModelError(nameof(request.Lat), $"{nameof(request.Lat)} cannot be equal to zero.");
+            }
+            if (request.Population < 0)
+            {
+                ModelState.AddModelError(nameof(request.Population), $"{nameof(request.Population)} cannot be less than zero.");
+            }
+
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+
+            return true;
         }
         #endregion
 
