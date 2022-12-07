@@ -59,6 +59,12 @@ namespace AlabamaWalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddWalkDifficulty(AddWalkDifficultyRequest request)
         {
+
+            // Validate the Request //
+            if (!ValidateAddWalkDifficulty(request))
+            {
+                return BadRequest(ModelState);
+            }
             var domain = _mapper.Map<WalkDifficulty>(request);
             var walkDifficulty = await _repository.AddWalkDifficultyAsync(domain);
             var response = _mapper.Map<WalkDifficultyDTO>(walkDifficulty);
@@ -70,6 +76,11 @@ namespace AlabamaWalks.API.Controllers
         [Route("{id:guid}")]
         public async Task<IActionResult> UpdateWalkDifficulty([FromRoute] Guid id, [FromBody] UpdateWalkDifficultyRequest request)
         {
+            // Validate the Request //
+            if (!ValidateUpdateWalkDifficulty(request))
+            {
+                return BadRequest(ModelState);
+            }
             var domain = _mapper.Map<WalkDifficulty>(request); 
 
             var walkDifficulty = await _repository.UpdateWalkDifficultyAsync(id, domain);
@@ -94,5 +105,46 @@ namespace AlabamaWalks.API.Controllers
             var resposne = _mapper.Map<WalkDifficultyDTO>(domain); 
             return Ok(resposne);    
         }
+
+        #region Private Methods
+        // Validate AddWalkDifficulty //
+        private bool ValidateAddWalkDifficulty(AddWalkDifficultyRequest request)
+        {
+            if(request == null)
+            {
+                ModelState.AddModelError(nameof(request), $"Add Walk Difficulty Data is required.");
+                return false;
+            }
+            if(string.IsNullOrWhiteSpace(request.Code))
+            {
+                ModelState.AddModelError(nameof(request.Code), $"{nameof(request.Code)} cannot be null or empty"); 
+            }
+            if (ModelState.ErrorCount> 0)
+            {
+                return false; 
+            }
+
+            return true; 
+        }
+        // Validate UpdateWalkDifficulty //
+        private bool ValidateUpdateWalkDifficulty(UpdateWalkDifficultyRequest request)
+        {
+            if (request == null)
+            {
+                ModelState.AddModelError(nameof(request), $"Add Walk Difficulty Data is required.");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(request.Code))
+            {
+                ModelState.AddModelError(nameof(request.Code), $"{nameof(request.Code)} cannot be null or empty");
+            }
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }
