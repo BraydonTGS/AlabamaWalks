@@ -12,12 +12,17 @@ namespace AlabamaWalks.API.Controllers
     public class WalksController : ControllerBase
     {
         private readonly IWalkRepository _repository;
+        private readonly IRegionRepository _regionRepository;
+        private readonly IWalkDifficultyRepository _walkDifficultyRepository;
         private readonly IMapper _mapper;
 
         // CTOR Injection //
-        public WalksController(IWalkRepository repository, IMapper mapper)
+        // Injecting WalkDiff and Region repo so that I can use for my Validations //
+        public WalksController(IWalkRepository repository, IRegionRepository regionRepository, IWalkDifficultyRepository walkDifficultyRepository, IMapper mapper)
         {
             _repository = repository;
+            _regionRepository = regionRepository;
+            _walkDifficultyRepository = walkDifficultyRepository;
             _mapper = mapper;
         }
 
@@ -50,6 +55,11 @@ namespace AlabamaWalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddWalk([FromBody] AddWalkRequest request)
         {
+            // Validate the Request //
+            if (!(await ValidateAddWalk(request)))
+            {
+                return BadRequest(ModelState); 
+            }
             // Convert DTO to Domain //
             var walkDomain = _mapper.Map<Walk>(request);
 
@@ -76,6 +86,11 @@ namespace AlabamaWalks.API.Controllers
         // Id is coming FromRoute, UpdateWalkRequest is coming FromBody
         public async Task<IActionResult> UpdateWalk([FromRoute]Guid id, [FromBody]UpdateWalkRequest request)
         {
+            // Validate the Request //
+            if(!(await ValidateUpdateWalk(request)))
+            {
+                return BadRequest(ModelState);  
+            }
             // Convert DTO to Domain //
             var walkDomain = _mapper.Map<Walk>(request);
             // Pass Domain to Repo //
@@ -102,6 +117,83 @@ namespace AlabamaWalks.API.Controllers
             var response = _mapper.Map<WalkDTO>(walk); 
             return Ok(response);
         }
+
+        #region Private Methods
+
+        // Validate Add Walk //
+        private async Task <bool> ValidateAddWalk(AddWalkRequest request)
+        {
+            if(request == null)
+            {
+                ModelState.AddModelError(nameof(request), $"Add Walk Data is required.");
+                return false;
+            }
+            if (!string.IsNullOrWhiteSpace(request.Name))
+            {
+                ModelState.AddModelError(nameof(request.Name), $"{nameof(request.Name)} cannot be null empty or white space.");
+            }
+            if (request.Length <= 0)
+            {
+                ModelState.AddModelError(nameof(request.Length), $"{nameof(request.Length)} cannot be less than or equal to zero.");
+            }
+
+            // Brought in the Region Repository via CTOR So that we can Validate if Region Exists //
+            var region = await _regionRepository.GetRegionByIdAsync(request.RegionId); 
+            if (region == null)
+            {
+                ModelState.AddModelError(nameof(request.RegionId), $"{nameof(request.RegionId)} is invalid.");
+            }
+
+            // Brought in the WalkDiff Repository via CTOR So that we can Validate if the WalkDiff Exists //
+            var walkDiff = await _walkDifficultyRepository.GetWalkDifficultyByIdAsync(request.WalkDifficultyId);
+            if(walkDiff == null)
+            {
+                ModelState.AddModelError(nameof(request.WalkDifficultyId), $"{nameof(request.WalkDifficultyId)} is invalid."); 
+            }
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+            return true; 
+        }
+
+        // Validate Update Walk //
+        private async Task<bool> ValidateUpdateWalk(UpdateWalkRequest request)
+        {
+            if (request == null)
+            {
+                ModelState.AddModelError(nameof(request), $"Add Walk Data is required.");
+                return false;
+            }
+            if (!string.IsNullOrWhiteSpace(request.Name))
+            {
+                ModelState.AddModelError(nameof(request.Name), $"{nameof(request.Name)} cannot be null empty or white space.");
+            }
+            if (request.Length <= 0)
+            {
+                ModelState.AddModelError(nameof(request.Length), $"{nameof(request.Length)} cannot be less than or equal to zero.");
+            }
+
+            // Brought in the Region Repository via CTOR So that we can Validate if Region Exists //
+            var region = await _regionRepository.GetRegionByIdAsync(request.RegionId);
+            if (region == null)
+            {
+                ModelState.AddModelError(nameof(request.RegionId), $"{nameof(request.RegionId)} is invalid.");
+            }
+
+            // Brought in the WalkDiff Repository via CTOR So that we can Validate if the WalkDiff Exists //
+            var walkDiff = await _walkDifficultyRepository.GetWalkDifficultyByIdAsync(request.WalkDifficultyId);
+            if (walkDiff == null)
+            {
+                ModelState.AddModelError(nameof(request.WalkDifficultyId), $"{nameof(request.WalkDifficultyId)} is invalid.");
+            }
+            if (ModelState.ErrorCount > 0)
+            {
+                return false;
+            }
+            return true;
+        }
+        #endregion
 
     }
 }
