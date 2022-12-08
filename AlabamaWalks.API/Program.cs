@@ -7,7 +7,10 @@ using AlabamaWalks.API.Interfaces;
 using AlabamaWalks.API.Repositories;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +43,23 @@ builder.Services.AddScoped<IWalkRepository, WalkRepositories>();
 builder.Services.AddScoped<IWalkDifficultyRepository, WalkDifficultyRepository>();
 
 // AutoMapper will look for all of the profiles that we have //
-builder.Services.AddAutoMapper(typeof(Program).Assembly); 
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+// Inject Authentication into the Services //
+// We are defining the options of our Tolken Validations Parameters //
+// Added Authentication - Added JwtBearer //
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true, 
+        ValidateAudience = true, 
+        ValidateLifetime = true, 
+        ValidateIssuerSigningKey = true, 
+        ValidIssuer = builder.Configuration["Jwt:Issuer"], 
+        ValidAudience = builder.Configuration["Jwt:Audience"], 
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    }); 
 
 var app = builder.Build();
 
@@ -52,6 +71,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Make sure the app is authenticated before we check for authorization //
+app.UseAuthentication(); 
 
 app.UseAuthorization();
 
