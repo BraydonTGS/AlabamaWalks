@@ -41,6 +41,7 @@ builder.Services.AddDbContext<AlabamaWalksDbContext>(options =>
 builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 builder.Services.AddScoped<IWalkRepository, WalkRepositories>();
 builder.Services.AddScoped<IWalkDifficultyRepository, WalkDifficultyRepository>();
+builder.Services.AddScoped<ITokenHandler, AlabamaWalks.API.Repositories.TokenHandler>();
 
 builder.Services.AddSingleton<IUserRepository, StaticUserRepository>(); 
 

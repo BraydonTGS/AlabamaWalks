@@ -1,9 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using AlabamaWalks.API.Models.Domain;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AlabamaWalks.API.Interfaces
 {
     public interface IUserRepository
     {
-        Task<bool> AuthenticateUserAsync(string username, string password); 
+        Task<User> AuthenticateUserAsync(string username, string password); 
     }
 }

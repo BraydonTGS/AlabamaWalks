@@ -19,16 +19,11 @@ namespace AlabamaWalks.API.Repositories
             }
         };
 
-        public async Task<bool> AuthenticateUserAsync(string username, string password)
+        public async Task<User> AuthenticateUserAsync(string username, string password)
         {
             var user = Users.Find(x => x.UserName.Equals(username, StringComparison.InvariantCultureIgnoreCase) &&
-            x.Password == password); 
-
-            if (user == null)
-            {
-                return false;
-            }
-            return true;
+            x.Password == password);
+            return user; 
         }
     }
 }
