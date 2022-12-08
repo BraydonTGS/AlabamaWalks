@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace AlabamaWalks.API.Validators
 {
-    public class UpdateWalkRequestValidator : AbstractValidator<UpdateWalkRequest>
+    public class AddWalkRequestValidator : AbstractValidator<AddWalkRequest>
     {
-        public UpdateWalkRequestValidator()
+        public AddWalkRequestValidator()
         {
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Length).GreaterThan(0); 

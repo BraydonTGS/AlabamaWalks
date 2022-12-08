@@ -119,24 +119,9 @@ namespace AlabamaWalks.API.Controllers
         }
 
         #region Private Methods
-
         // Validate Add Walk //
         private async Task <bool> ValidateAddWalk(AddWalkRequest request)
         {
-            if(request == null)
-            {
-                ModelState.AddModelError(nameof(request), $"Add Walk Data is required.");
-                return false;
-            }
-            if (!string.IsNullOrWhiteSpace(request.Name))
-            {
-                ModelState.AddModelError(nameof(request.Name), $"{nameof(request.Name)} cannot be null empty or white space.");
-            }
-            if (request.Length <= 0)
-            {
-                ModelState.AddModelError(nameof(request.Length), $"{nameof(request.Length)} cannot be less than or equal to zero.");
-            }
-
             // Brought in the Region Repository via CTOR So that we can Validate if Region Exists //
             var region = await _regionRepository.GetRegionByIdAsync(request.RegionId); 
             if (region == null)
@@ -160,20 +145,6 @@ namespace AlabamaWalks.API.Controllers
         // Validate Update Walk //
         private async Task<bool> ValidateUpdateWalk(UpdateWalkRequest request)
         {
-            if (request == null)
-            {
-                ModelState.AddModelError(nameof(request), $"Add Walk Data is required.");
-                return false;
-            }
-            if (!string.IsNullOrWhiteSpace(request.Name))
-            {
-                ModelState.AddModelError(nameof(request.Name), $"{nameof(request.Name)} cannot be null empty or white space.");
-            }
-            if (request.Length <= 0)
-            {
-                ModelState.AddModelError(nameof(request.Length), $"{nameof(request.Length)} cannot be less than or equal to zero.");
-            }
-
             // Brought in the Region Repository via CTOR So that we can Validate if Region Exists //
             var region = await _regionRepository.GetRegionByIdAsync(request.RegionId);
             if (region == null)
