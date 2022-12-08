@@ -53,12 +53,13 @@ namespace AlabamaWalks.API.Controllers
         public async Task<IActionResult> AddRegion(AddRegionRequest addRegionRequest)
         {
             // Validate The Request // 
-            var isValid = ValidateAddRegion(addRegionRequest);
+            // Before Fluent Validation //
+       /*     var isValid = ValidateAddRegion(addRegionRequest);
             if (!isValid)
             {
                 // Bad Request Will Automatically Bind the BadRequest Errors to the ModelState //
                 return BadRequest(ModelState); 
-            }
+            }*/
             // Request(DTO) Pass to Domain //
             var region = _mapper.Map<Region>(addRegionRequest);
             

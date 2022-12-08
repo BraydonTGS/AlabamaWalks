@@ -5,6 +5,8 @@
 using AlabamaWalks.API.Data;
 using AlabamaWalks.API.Interfaces;
 using AlabamaWalks.API.Repositories;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Injecting Fluent Validation - Registering Validators across my Program //
+
+//builder.Services.AddFluentValidation(options => options.RegisterValidatorsFromAssemblyContaining<Program>());
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
 
 // Injecting the DbContext Class into the Services Collection //
 builder.Services.AddDbContext<AlabamaWalksDbContext>(options =>
