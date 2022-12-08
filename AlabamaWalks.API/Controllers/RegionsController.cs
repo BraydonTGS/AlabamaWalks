@@ -52,17 +52,19 @@ namespace AlabamaWalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRegion(AddRegionRequest addRegionRequest)
         {
+            #region Before Fluent Validation 
             // Validate The Request // 
-            // Before Fluent Validation //
-       /*     var isValid = ValidateAddRegion(addRegionRequest);
-            if (!isValid)
-            {
-                // Bad Request Will Automatically Bind the BadRequest Errors to the ModelState //
-                return BadRequest(ModelState); 
-            }*/
+            /*     var isValid = ValidateAddRegion(addRegionRequest);
+                 if (!isValid)
+                 {
+                     // Bad Request Will Automatically Bind the BadRequest Errors to the ModelState //
+                     return BadRequest(ModelState); 
+                 }*/
+            #endregion
             // Request(DTO) Pass to Domain //
             var region = _mapper.Map<Region>(addRegionRequest);
-            
+
+            #region Before AutoMapper
             // For Reference Purposes - Before AutoMapper // 
             /*     var region = new Region()
              {
@@ -74,7 +76,7 @@ namespace AlabamaWalks.API.Controllers
                  Population= addRegionRequest.Population
 
              }; */
-
+            #endregion
             // Domain Pass to Repo //
             var response = await _repository.AddRegionAsync(region);
 
@@ -110,11 +112,14 @@ namespace AlabamaWalks.API.Controllers
         // Id is coming FromRoute, UpdateRegionRequest is coming FromBody
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequest updateRegion)
         {
+            #region Before Fluent Validation 
             // Validate the incoming request // 
-            if (!ValidateUpdateRegion(updateRegion))
+        /*    if (!ValidateUpdateRegion(updateRegion))
             {
                 return BadRequest(ModelState);
-            }
+            }*/
+            #endregion
+
             // Convert DTO to Domain // 
             var region = _mapper.Map<Region>(updateRegion);
 
@@ -135,7 +140,7 @@ namespace AlabamaWalks.API.Controllers
 
         #region Private Methods
 
-        private bool ValidateAddRegion(AddRegionRequest request)
+/*        private bool ValidateAddRegion(AddRegionRequest request)
         {
             if (request == null)
             {
@@ -173,9 +178,9 @@ namespace AlabamaWalks.API.Controllers
             }
 
             return true; 
-        }
+        }*/
 
-        private bool ValidateUpdateRegion(UpdateRegionRequest request)
+    /*    private bool ValidateUpdateRegion(UpdateRegionRequest request)
         {
             if (request == null)
             {
@@ -213,7 +218,7 @@ namespace AlabamaWalks.API.Controllers
             }
 
             return true;
-        }
+        }*/
         #endregion
 
     }

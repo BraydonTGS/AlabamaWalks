@@ -3,19 +3,16 @@ using FluentValidation;
 
 namespace AlabamaWalks.API.Validators
 {
-    // Using Fluent Validations: AbstractValidator Requires a Type //
-    public class AddRegionRequestValidator : AbstractValidator<AddRegionRequest>
+    public class UpdateRegionRequestValidator : AbstractValidator<UpdateRegionRequest>
     {
-        // Use the CTOR to Define the rules that we want to validate //
-        public AddRegionRequestValidator()
+        public UpdateRegionRequestValidator()
         {
             RuleFor(x => x.Code).NotEmpty();
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Area).GreaterThan(0);
             RuleFor(x => x.Population).GreaterThanOrEqualTo(0);
-            RuleFor(x => x.Long).NotEqual(0); 
+            RuleFor(x => x.Long).NotEqual(0);
             RuleFor(x => x.Lat).NotEqual(0);
-
         }
     }
 }

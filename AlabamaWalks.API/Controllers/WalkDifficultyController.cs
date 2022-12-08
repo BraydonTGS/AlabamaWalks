@@ -60,11 +60,13 @@ namespace AlabamaWalks.API.Controllers
         public async Task<IActionResult> AddWalkDifficulty(AddWalkDifficultyRequest request)
         {
 
+            #region Before Fluent Validation
             // Validate the Request //
-            if (!ValidateAddWalkDifficulty(request))
+       /*     if (!ValidateAddWalkDifficulty(request))
             {
                 return BadRequest(ModelState);
-            }
+            }*/
+            #endregion
             var domain = _mapper.Map<WalkDifficulty>(request);
             var walkDifficulty = await _repository.AddWalkDifficultyAsync(domain);
             var response = _mapper.Map<WalkDifficultyDTO>(walkDifficulty);
@@ -76,11 +78,14 @@ namespace AlabamaWalks.API.Controllers
         [Route("{id:guid}")]
         public async Task<IActionResult> UpdateWalkDifficulty([FromRoute] Guid id, [FromBody] UpdateWalkDifficultyRequest request)
         {
+            #region Before Fluent Validations
             // Validate the Request //
-            if (!ValidateUpdateWalkDifficulty(request))
+     /*       if (!ValidateUpdateWalkDifficulty(request))
             {
                 return BadRequest(ModelState);
-            }
+            }*/
+            #endregion
+
             var domain = _mapper.Map<WalkDifficulty>(request); 
 
             var walkDifficulty = await _repository.UpdateWalkDifficultyAsync(id, domain);
@@ -108,7 +113,7 @@ namespace AlabamaWalks.API.Controllers
 
         #region Private Methods
         // Validate AddWalkDifficulty //
-        private bool ValidateAddWalkDifficulty(AddWalkDifficultyRequest request)
+/*        private bool ValidateAddWalkDifficulty(AddWalkDifficultyRequest request)
         {
             if(request == null)
             {
@@ -125,9 +130,9 @@ namespace AlabamaWalks.API.Controllers
             }
 
             return true; 
-        }
+        }*/
         // Validate UpdateWalkDifficulty //
-        private bool ValidateUpdateWalkDifficulty(UpdateWalkDifficultyRequest request)
+   /*     private bool ValidateUpdateWalkDifficulty(UpdateWalkDifficultyRequest request)
         {
             if (request == null)
             {
@@ -144,7 +149,7 @@ namespace AlabamaWalks.API.Controllers
             }
 
             return true;
-        }
+        }*/
         #endregion
     }
 }
