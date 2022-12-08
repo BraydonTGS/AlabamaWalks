@@ -2,6 +2,7 @@
 using AlabamaWalks.API.Models.Domain;
 using AlabamaWalks.API.Models.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace AlabamaWalks.API.Controllers
     // Region endpoint maps to the Region Controller //
     [Route("[controller]")]
     [ApiController]
+    
     public class RegionsController : ControllerBase
     {
         private readonly IRegionRepository _repository;
@@ -50,6 +52,7 @@ namespace AlabamaWalks.API.Controllers
 
         // Create a New Region // 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddRegion(AddRegionRequest addRegionRequest)
         {
             #region Before Fluent Validation 
@@ -90,6 +93,7 @@ namespace AlabamaWalks.API.Controllers
 
         // Delete Region //
         [HttpDelete]
+        [Authorize]
         [Route("{id:guid}")]
         public async Task<IActionResult> DeleteRegion(Guid id)
         {
@@ -109,6 +113,7 @@ namespace AlabamaWalks.API.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
+        [Authorize]
         // Id is coming FromRoute, UpdateRegionRequest is coming FromBody
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequest updateRegion)
         {
