@@ -2,8 +2,10 @@
 using AlabamaWalks.API.Models.Domain;
 using AlabamaWalks.API.Models.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace AlabamaWalks.API.Controllers
 {
@@ -28,6 +30,7 @@ namespace AlabamaWalks.API.Controllers
 
         // Get All Walks //
         [HttpGet]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetAllWalks()
         {
             // Fetch From DB - Convert to DTO - Return //
@@ -44,6 +47,7 @@ namespace AlabamaWalks.API.Controllers
         [HttpGet]
         [Route("{id:guid}")]
         [ActionName("GetWalkById")]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetWalkById(Guid id)
         {
            var walk = await _repository.GetWalkByIdAsync(id);
@@ -53,6 +57,7 @@ namespace AlabamaWalks.API.Controllers
 
         // Create a New Walk //
         [HttpPost]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> AddWalk([FromBody] AddWalkRequest request)
         {
             // Validate the Request //
@@ -83,6 +88,7 @@ namespace AlabamaWalks.API.Controllers
         // Update a Walk //
         [HttpPut]
         [Route("{id:guid}")]
+        [Authorize(Roles = "writer")]
         // Id is coming FromRoute, UpdateWalkRequest is coming FromBody
         public async Task<IActionResult> UpdateWalk([FromRoute]Guid id, [FromBody]UpdateWalkRequest request)
         {
@@ -107,6 +113,7 @@ namespace AlabamaWalks.API.Controllers
 
         [HttpDelete]
         [Route("{id:guid}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> DeleteWalk([FromRoute] Guid id)
         {
             var walk = await _repository.DeleteWalkAsync(id);

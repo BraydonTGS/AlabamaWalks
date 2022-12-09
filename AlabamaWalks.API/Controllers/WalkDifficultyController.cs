@@ -2,9 +2,11 @@
 using AlabamaWalks.API.Models.Domain;
 using AlabamaWalks.API.Models.DTO;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
+using System.Data;
 
 namespace AlabamaWalks.API.Controllers
 {
@@ -23,6 +25,7 @@ namespace AlabamaWalks.API.Controllers
 
         // Get All Walk Difficulties //
         [HttpGet]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetAllWalkDifficulties()
         {
             var walkDiff = await _repository.GetAllWalkDifficultiesAsync(); 
@@ -41,6 +44,7 @@ namespace AlabamaWalks.API.Controllers
         [HttpGet]
         [Route("{id:guid}")]
         [ActionName("GetWalkDifficultyById")]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetWalkDifficultyById(Guid id)
         {
            var walkDiff = await _repository.GetWalkDifficultyByIdAsync(id);
@@ -57,6 +61,7 @@ namespace AlabamaWalks.API.Controllers
 
         // Add a New Walk Difficulty //
         [HttpPost]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> AddWalkDifficulty(AddWalkDifficultyRequest request)
         {
 
@@ -76,6 +81,7 @@ namespace AlabamaWalks.API.Controllers
         // Update Walk Difficulty //
         [HttpPut]
         [Route("{id:guid}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> UpdateWalkDifficulty([FromRoute] Guid id, [FromBody] UpdateWalkDifficultyRequest request)
         {
             #region Before Fluent Validations
@@ -100,6 +106,7 @@ namespace AlabamaWalks.API.Controllers
         // Delete Walk Difficulty //
         [HttpDelete]
         [Route("{id:guid}")]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> DeleteWalkDifficulty(Guid id)
         {
             var domain = await _repository.DeleteWalkDifficultyAsync(id); 
