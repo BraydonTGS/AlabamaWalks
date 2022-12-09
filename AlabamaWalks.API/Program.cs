@@ -65,8 +65,7 @@ builder.Services.AddScoped<IRegionRepository, RegionRepository>();
 builder.Services.AddScoped<IWalkRepository, WalkRepositories>();
 builder.Services.AddScoped<IWalkDifficultyRepository, WalkDifficultyRepository>();
 builder.Services.AddScoped<ITokenHandler, AlabamaWalks.API.Repositories.TokenHandler>();
-
-builder.Services.AddSingleton<IUserRepository, StaticUserRepository>(); 
+builder.Services.AddScoped<IUserRepository, UserRepository>(); 
 
 // AutoMapper will look for all of the profiles that we have //
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
