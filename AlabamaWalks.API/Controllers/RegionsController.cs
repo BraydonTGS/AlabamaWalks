@@ -26,6 +26,7 @@ namespace AlabamaWalks.API.Controllers
 
         // Get All Regions // Dont need to Worry about Validation - Not accepting anything from the Client //
         [HttpGet]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetAllRegions()
         {
             var regions = await _repository.GetAllRegionsAsync();
@@ -38,6 +39,7 @@ namespace AlabamaWalks.API.Controllers
         [HttpGet]
         [Route("{id:guid}")]
         [ActionName("GetRegionById")]
+        [Authorize(Roles = "reader")]
         public async Task<IActionResult> GetRegionById(Guid id)
         {
             var region = await _repository.GetRegionByIdAsync(id);
@@ -52,7 +54,7 @@ namespace AlabamaWalks.API.Controllers
 
         // Create a New Region // 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "writer")]
         public async Task<IActionResult> AddRegion(AddRegionRequest addRegionRequest)
         {
             #region Before Fluent Validation 
@@ -93,8 +95,9 @@ namespace AlabamaWalks.API.Controllers
 
         // Delete Region //
         [HttpDelete]
-        [Authorize]
         [Route("{id:guid}")]
+        [Authorize(Roles = "writer")]
+
         public async Task<IActionResult> DeleteRegion(Guid id)
         {
             // Convert Response back to DTO //
@@ -113,7 +116,7 @@ namespace AlabamaWalks.API.Controllers
 
         [HttpPut]
         [Route("{id:guid}")]
-        [Authorize]
+        [Authorize(Roles = "writer")]
         // Id is coming FromRoute, UpdateRegionRequest is coming FromBody
         public async Task<IActionResult> UpdateRegion([FromRoute] Guid id, [FromBody] UpdateRegionRequest updateRegion)
         {

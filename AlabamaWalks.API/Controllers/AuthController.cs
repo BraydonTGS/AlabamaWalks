@@ -23,10 +23,11 @@ namespace AlabamaWalks.API.Controllers
 
             // Check if user is authenticated //
             var response =  await _repository.AuthenticateUserAsync(request.UserName, request.Password);
-            if (response)
+            if (response != null)
             {
                 // Generate Jwt Token //
-                _tokenHandler.CreateTokenAsync(); 
+               var token = await _tokenHandler.CreateTokenAsync(response); 
+               return Ok(token);
             }
 
             return BadRequest("Invalid Username or Password"); 

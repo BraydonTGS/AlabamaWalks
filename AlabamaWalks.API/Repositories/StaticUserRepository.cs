@@ -15,7 +15,8 @@ namespace AlabamaWalks.API.Repositories
                 Id = Guid.NewGuid(),
                 UserName = "GeoMatix",
                 Password = "JumpUp123",
-                Roles = new List<string>{"reader"}
+                Roles = new List<string>{"reader", "writer"}
+                // The user with reader/writer will be able to access all 5 endpoints //
             }
         };
 
