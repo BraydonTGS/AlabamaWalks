@@ -11,7 +11,7 @@
 
         // Many to Many Relationship //
         // Navigation Property //
-        public List<User_Role> UserRoles { get; set; }
+       public List<User_Role> UserRoles { get; set; }
 
         
     }

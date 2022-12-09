@@ -7,7 +7,7 @@ namespace AlabamaWalks.API.Repositories
     {
         private List<User> Users = new List<User>()
         {
-            new User()
+          /*  new User()
             {
                 FirstName = "Braydon",
                 LastName = "Sutherland",
@@ -17,7 +17,7 @@ namespace AlabamaWalks.API.Repositories
                 Password = "JumpUp123",
                 Roles = new List<string>{"reader", "writer"}
                 // The user with reader/writer will be able to access all 5 endpoints //
-            }
+            }*/
         };
 
         public async Task<User> AuthenticateUserAsync(string username, string password)

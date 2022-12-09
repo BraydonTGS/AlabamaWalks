@@ -13,8 +13,7 @@ namespace AlabamaWalks.API.Data
         public DbSet<WalkDifficulty> WalkDifficulty { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
-
-        public DbSet<User_Role> User_Roles { get; set; }
+        public DbSet<User_Role> Users_Roles { get; set; }
 
 
         // Overriding the OnModelCreating to define our Many to Many Relationships //

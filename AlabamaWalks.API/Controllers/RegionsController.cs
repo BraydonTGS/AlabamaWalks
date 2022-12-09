@@ -59,12 +59,12 @@ namespace AlabamaWalks.API.Controllers
         {
             #region Before Fluent Validation 
             // Validate The Request // 
-            /*     var isValid = ValidateAddRegion(addRegionRequest);
-                 if (!isValid)
-                 {
-                     // Bad Request Will Automatically Bind the BadRequest Errors to the ModelState //
-                     return BadRequest(ModelState); 
-                 }*/
+       /*     var isValid = ValidateAddRegion(addRegionRequest);
+            if (!isValid)
+            {
+                // Bad Request Will Automatically Bind the BadRequest Errors to the ModelState //
+                return BadRequest(ModelState);
+            }*/
             #endregion
             // Request(DTO) Pass to Domain //
             var region = _mapper.Map<Region>(addRegionRequest);

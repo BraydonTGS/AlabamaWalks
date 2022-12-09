@@ -24,11 +24,11 @@ namespace AlabamaWalks.API.Repositories
             claims.Add(new Claim(ClaimTypes.Email, user.EmailAddress));
 
             // Loop into roles of users //
-            user.Roles.ForEach((role) =>
+     /*       user.Roles.ForEach((role) =>
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
 
-            });
+            });*/
 
             // Takes in a Validated User and Returns a JWT //
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
